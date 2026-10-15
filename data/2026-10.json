@@ -133,6 +133,13 @@
             "eind": "11:00",
             "type": "Poets",
             "commentaar": ""
+          },
+          {
+            "id": "7569bf17",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
