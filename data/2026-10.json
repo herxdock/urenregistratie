@@ -144,5 +144,20 @@
         ]
       }
     }
+  },
+  "2026-10-09": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "acd0418a",
+            "begin": "06:55",
+            "eind": "08:55",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
