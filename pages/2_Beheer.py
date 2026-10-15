@@ -1,15 +1,12 @@
 from datetime import date, timedelta
 import streamlit as st
 
-from src.auth import require_login
-from src.ui import inject_mobile_css
+
 from src.settings_store import load_settings, save_settings
 from src.github_store import load_month, delete_shift
 from src.reports import shift_minutes, fmt_hm
 
-st.set_page_config(page_title="Beheer", page_icon="⚙️", layout="centered")
-require_login()
-inject_mobile_css()
+
 
 st.title("⚙️ Beheer")
 st.caption("Beheer de opties die in de dropdown bij een shift verschijnen.")
