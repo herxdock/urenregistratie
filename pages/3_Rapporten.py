@@ -2,19 +2,17 @@ from datetime import date
 import pandas as pd
 import streamlit as st
 
-from src.auth import require_login
-from src.ui import inject_mobile_css
 from src.reports import period_bounds, load_range, aggregate, shift_minutes, fmt_hm
 from src.export import to_excel_bytes, to_pdf_bytes
 
-st.set_page_config(page_title="Rapporten", page_icon="📊", layout="centered")
-require_login()
-inject_mobile_css()
-
 st.title("📊 Rapporten")
 
-mode = st.radio("Periode", ["Dag", "Week", "Maand", "Aangepaste range"],
-                horizontal=True)
+# ---------------- Periode ----------------
+mode = st.radio(
+    "Periode",
+    ["Dag", "Week", "Maand", "Aangepaste range"],
+    horizontal=True,
+)
 
 if mode == "Aangepaste range":
     c1, c2 = st.columns(2)
@@ -33,12 +31,14 @@ else:
         "Maand": f"maand {start:%m/%Y}",
     }[mode]
 
+# ---------------- Data ----------------
 rows = load_range(start, end)
 
 if not rows:
     st.info("Geen gegevens in deze periode.")
     st.stop()
 
+# ---------------- Filters ----------------
 types = sorted({s.get("type", "Standaard") for _, s in rows})
 sel_types = st.multiselect("Filter op type", types, default=types)
 if sel_types:
@@ -48,14 +48,15 @@ if not rows:
     st.warning("Geen resultaten met deze filters.")
     st.stop()
 
-group_by = st.radio("Groepeer per", ["Dag", "Week", "Maand", "Type"],
-                    horizontal=True)
+# ---------------- Groepering ----------------
+group_by = st.radio("Groepeer per", ["Dag", "Week", "Maand", "Type"], horizontal=True)
 
 summary = aggregate(rows, group_by)
 total_min = sum(b["minutes"] for b in summary)
 n_days = len({d for d, _ in rows})
 gem_per_dag = total_min // n_days if n_days else 0
 
+# ---------------- KPI's ----------------
 c1, c2 = st.columns(2)
 c1.metric("Totaal", fmt_hm(total_min))
 c2.metric("Shiften", len(rows))
@@ -63,6 +64,7 @@ c3, c4 = st.columns(2)
 c3.metric("Dagen met uren", n_days)
 c4.metric("Gem. per dag", fmt_hm(gem_per_dag))
 
+# ---------------- Samenvatting ----------------
 summary_df = pd.DataFrame([
     {"Periode": b["key"], "Uren": fmt_hm(b["minutes"]), "Shiften": b["count"]}
     for b in summary
@@ -70,6 +72,7 @@ summary_df = pd.DataFrame([
 st.subheader(f"Samenvatting per {group_by.lower()}")
 st.dataframe(summary_df, use_container_width=True, hide_index=True)
 
+# ---------------- Detail ----------------
 detail_df = pd.DataFrame([
     {
         "Datum": d.strftime("%d/%m/%Y"),
@@ -84,6 +87,7 @@ detail_df = pd.DataFrame([
 with st.expander(f"Detail per shift ({len(detail_df)})"):
     st.dataframe(detail_df, use_container_width=True, hide_index=True)
 
+# ---------------- Export ----------------
 st.divider()
 st.subheader("Exporteren")
 
@@ -98,11 +102,17 @@ pdf_bytes = to_pdf_bytes(
 
 stamp = date.today().strftime("%Y%m%d")
 c1, c2 = st.columns(2)
-c1.download_button("⬇️ Excel", data=excel_bytes,
-                   file_name=f"urenrapport_{stamp}.xlsx",
-                   mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                   use_container_width=True)
-c2.download_button("⬇️ PDF", data=pdf_bytes,
-                   file_name=f"urenrapport_{stamp}.pdf",
-                   mime="application/pdf",
-                   use_container_width=True)
+c1.download_button(
+    "⬇️ Excel",
+    data=excel_bytes,
+    file_name=f"urenrapport_{stamp}.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    use_container_width=True,
+)
+c2.download_button(
+    "⬇️ PDF",
+    data=pdf_bytes,
+    file_name=f"urenrapport_{stamp}.pdf",
+    mime="application/pdf",
+    use_container_width=True,
+)
