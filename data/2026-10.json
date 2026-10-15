@@ -75,6 +75,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "67899de8",
+            "begin": "08:55",
+            "eind": "12:10",
+            "type": "Teamvergadering",
+            "commentaar": "Vakantieteam"
           }
         ]
       }
