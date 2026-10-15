@@ -14,6 +14,13 @@
         "eind": "17:30",
         "type": "Standaard",
         "commentaar": ""
+      },
+      {
+        "id": "0fe9a572",
+        "begin": "09:10",
+        "eind": "11:55",
+        "type": "Inspring",
+        "commentaar": "Vergadering"
       }
     ]
   }
