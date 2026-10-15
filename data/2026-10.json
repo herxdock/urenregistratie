@@ -82,6 +82,13 @@
             "eind": "12:10",
             "type": "Teamvergadering",
             "commentaar": "Vakantieteam"
+          },
+          {
+            "id": "318242a9",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
