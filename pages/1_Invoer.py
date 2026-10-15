@@ -2,18 +2,20 @@ from datetime import date, time, datetime, timedelta
 import uuid
 import streamlit as st
 
+from src.auth import current_user
 from src.github_store import load_day_full, save_day
 from src.settings_store import load_settings
 from src.reports import shift_minutes, fmt_hm
-from src.ui import kpi_grid
 
 st.title("📝 Uren invullen")
+
+user = current_user()
+username = user.get("name", "")
 
 DEFAULT_BEGIN = time(8, 0)
 DEFAULT_EIND = time(17, 0)
 
 
-# ---------------- Helpers ----------------
 def parse_time(s):
     if not s:
         return DEFAULT_BEGIN
@@ -38,7 +40,7 @@ def minutes_between(begin: time, eind: time) -> int:
     ))
 
 
-def _warnings_for(begin: time, eind: time, shifts: list, current_id: str) -> list[str]:
+def _warnings_for(begin, eind, shifts, current_id) -> list[str]:
     warns = []
     dur = minutes_between(begin, eind)
     if 0 < dur < 15:
@@ -46,7 +48,6 @@ def _warnings_for(begin: time, eind: time, shifts: list, current_id: str) -> lis
     if dur > 12 * 60:
         h, m = divmod(dur, 60)
         warns.append(f"⏱️ Deze shift duurt **{h}u {m:02d}m** (meer dan 12 uur).")
-
     b_min = begin.hour * 60 + begin.minute
     e_min = eind.hour * 60 + eind.minute
     for s in shifts:
@@ -69,7 +70,11 @@ def _week_totals(monday: date) -> tuple[int, int]:
         k = (d.year, d.month)
         if k not in cache:
             cache[k] = load_month(d)
-        shifts_w = cache[k].get(d.isoformat(), {}).get("shifts", [])
+        entry = cache[k].get(d.isoformat(), {})
+        if "users" in entry:
+            shifts_w = entry["users"].get(username, {}).get("shifts", [])
+        else:
+            shifts_w = entry.get("shifts", [])
         if shifts_w:
             days += 1
             total += sum(shift_minutes(s) for s in shifts_w)
@@ -78,16 +83,14 @@ def _week_totals(monday: date) -> tuple[int, int]:
 
 # ---------------- Datum ----------------
 sel_date = st.date_input(
-    "Datum",
-    value=date.today(),
-    format="DD/MM/YYYY",
-    help="Standaard vandaag. Kies een andere datum om te wijzigen.",
+    "Datum", value=date.today(), format="DD/MM/YYYY",
+    help="Standaard vandaag.",
 )
 day_key = sel_date.isoformat()
 
 # ---------------- Load bij datumwissel ----------------
-if st.session_state.get("loaded_date") != day_key:
-    full = load_day_full(sel_date)
+if st.session_state.get("loaded_date") != day_key or st.session_state.get("loaded_user") != username:
+    full = load_day_full(sel_date, username)
     stored = full["shifts"]
     stored_note = full["note"]
 
@@ -124,51 +127,44 @@ if st.session_state.get("loaded_date") != day_key:
 
     st.session_state["note_input"] = stored_note
     st.session_state["loaded_date"] = day_key
+    st.session_state["loaded_user"] = username
 
 
-# ---------------- #1 Indicator: vandaag al ingevuld? ----------------
+# ---------------- Indicator ----------------
 saved_now = [s for s in st.session_state["shifts"] if s.get("saved")]
 if saved_now:
     total_now = sum(minutes_between(parse_time(s["begin"]), parse_time(s["eind"]))
                     for s in saved_now)
     n_now = len(saved_now)
     if sel_date == date.today():
-        st.success(f"✅ Vandaag: **{n_now}** shift(s) geregistreerd — "
-                   f"totaal **{fmt_hm(total_now)}**")
+        st.success(f"✅ Vandaag: **{n_now}** shift(s) — totaal **{fmt_hm(total_now)}**")
     else:
-        st.info(f"ℹ️ {sel_date:%d/%m/%Y}: **{n_now}** shift(s) — "
-                f"totaal **{fmt_hm(total_now)}**")
+        st.info(f"ℹ️ {sel_date:%d/%m/%Y}: **{n_now}** shift(s) — totaal **{fmt_hm(total_now)}**")
 
 
-# ---------------- #4 Weekoverzicht ----------------
+# ---------------- Weekoverzicht ----------------
 monday = sel_date - timedelta(days=sel_date.weekday())
 sunday = monday + timedelta(days=6)
 wk_total, wk_days = _week_totals(monday)
 
 with st.container(border=True):
     st.markdown(f"#### 📊 Week van {monday:%d/%m} t/m {sunday:%d/%m}")
-    st.markdown(
-        f"**{fmt_hm(wk_total)}** over **{wk_days}** dag(en) met uren."
-    )
+    st.markdown(f"**{fmt_hm(wk_total)}** over **{wk_days}** dag(en) met uren.")
 
 
-# ---------------- Dropdown-opties ----------------
+# ---------------- Opties ----------------
 settings = load_settings()
 options = list(settings.get("shift_types", ["Standaard"]))
 if "Standaard" not in options:
     options.insert(0, "Standaard")
 
 
-# ---------------- Persistentie ----------------
 def persist_shifts():
     to_store = [{
-        "id": s["id"],
-        "begin": s["begin"],
-        "eind": s["eind"],
-        "type": s["type"],
-        "commentaar": s["commentaar"],
+        "id": s["id"], "begin": s["begin"], "eind": s["eind"],
+        "type": s["type"], "commentaar": s["commentaar"],
     } for s in st.session_state["shifts"] if s["saved"]]
-    save_day(sel_date, shifts=to_store)
+    save_day(sel_date, username, shifts=to_store)
 
 
 # ---------------- Shift-blokken ----------------
@@ -184,21 +180,14 @@ for i, s in enumerate(shifts):
         e = c2.time_input("Eind", key=f"eind_{sid}", step=300)
 
         keuze = st.selectbox("Type", options, key=f"type_{sid}")
-        comment = st.text_area(
-            "Commentaar", key=f"comment_{sid}", height=80,
-            placeholder="Optionele opmerking…",
-        )
+        comment = st.text_area("Commentaar", key=f"comment_{sid}", height=80,
+                               placeholder="Optionele opmerking…")
 
         c_save, c_del = st.columns([3, 1])
         save_clicked = c_save.button(
-            f"💾 Shift {i + 1} opslaan",
-            key=f"save_{sid}",
-            use_container_width=True,
-            type="primary",
-        )
-        del_clicked = c_del.button(
-            "🗑️", key=f"del_{sid}", help="Verwijder deze shift (ook uit de opslag)"
-        )
+            f"💾 Shift {i + 1} opslaan", key=f"save_{sid}",
+            use_container_width=True, type="primary")
+        del_clicked = c_del.button("🗑️", key=f"del_{sid}", help="Verwijder deze shift")
 
         if save_clicked:
             if e <= b:
@@ -215,10 +204,8 @@ for i, s in enumerate(shifts):
                     st.info("👆 Klik nogmaals op **Opslaan** om te bevestigen.")
                 else:
                     st.session_state.pop(pending_key, None)
-                    s["begin"] = fmt(b)
-                    s["eind"] = fmt(e)
-                    s["type"] = keuze
-                    s["commentaar"] = comment.strip()
+                    s["begin"] = fmt(b); s["eind"] = fmt(e)
+                    s["type"] = keuze; s["commentaar"] = comment.strip()
                     s["saved"] = True
                     try:
                         persist_shifts()
@@ -242,14 +229,8 @@ for i, s in enumerate(shifts):
 # ---------------- Extra shift ----------------
 st.write("")
 if st.button("➕ Extra shift", use_container_width=True):
-    ns = {
-        "id": new_id(),
-        "begin": fmt(DEFAULT_BEGIN),
-        "eind": fmt(DEFAULT_EIND),
-        "type": "Standaard",
-        "commentaar": "",
-        "saved": False,
-    }
+    ns = {"id": new_id(), "begin": fmt(DEFAULT_BEGIN), "eind": fmt(DEFAULT_EIND),
+          "type": "Standaard", "commentaar": "", "saved": False}
     st.session_state["shifts"].append(ns)
     st.session_state[f"begin_{ns['id']}"] = DEFAULT_BEGIN
     st.session_state[f"eind_{ns['id']}"] = DEFAULT_EIND
@@ -258,35 +239,27 @@ if st.button("➕ Extra shift", use_container_width=True):
     st.rerun()
 
 if not st.session_state["shifts"]:
-    st.info("Nog geen shiften voor deze dag. Klik op **➕ Extra shift** om te beginnen.")
+    st.info("Geen shiften voor deze dag. Klik op **➕ Extra shift**.")
 
 
-# ---------------- Totaal vandaag ----------------
-total_min = sum(
-    minutes_between(parse_time(s["begin"]), parse_time(s["eind"]))
-    for s in st.session_state["shifts"] if s["saved"]
-)
-st.caption(
-    f"Totaal opgeslagen: **{total_min // 60}u {total_min % 60:02d}m** "
-    f"over {sum(1 for s in st.session_state['shifts'] if s['saved'])} shift(s)."
-)
+# ---------------- Totaal ----------------
+total_min = sum(minutes_between(parse_time(s["begin"]), parse_time(s["eind"]))
+                for s in st.session_state["shifts"] if s["saved"])
+st.caption(f"Totaal opgeslagen: **{total_min // 60}u {total_min % 60:02d}m** "
+           f"over {sum(1 for s in st.session_state['shifts'] if s['saved'])} shift(s).")
 
 
-# ---------------- #10 Dagnotitie ----------------
+# ---------------- Notitie ----------------
 with st.container(border=True):
     st.markdown("#### 📝 Notitie voor deze dag")
     st.caption("Vrije tekst over de hele dag (los van shift-commentaar).")
 
-    note_val = st.text_area(
-        "Notitie",
-        key="note_input",
-        height=100,
-        label_visibility="collapsed",
-        placeholder="bv. ziek gemeld, verkeersellende, opmerking voor de baas…",
-    )
+    note_val = st.text_area("Notitie", key="note_input", height=100,
+                            label_visibility="collapsed",
+                            placeholder="bv. ziek gemeld, verkeersellende…")
     if st.button("💾 Notitie opslaan", key="save_note", use_container_width=True):
         try:
-            save_day(sel_date, note=note_val)
+            save_day(sel_date, username, note=note_val)
             st.success("Notitie opgeslagen ✅")
             st.rerun()
         except Exception as ex:
