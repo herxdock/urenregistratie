@@ -28,6 +28,14 @@ with st.container(border=True):
         "keer op **Opslaan** klikken om te bevestigen."
     )
 
+with st.container(border=True):
+    st.markdown("### 👥 Meerdere gebruikers")
+    st.markdown(
+        "Elke gebruiker ziet **alleen de eigen shiften, notities en rapporten**. "
+        "Beheerders kunnen in **Rapporten** kiezen om data van één of alle gebruikers te zien, "
+        "en hebben toegang tot de **Beheer**-pagina."
+    )
+
 # ============================================================
 # Beheer
 # ============================================================
@@ -79,9 +87,10 @@ with st.container(border=True):
 with st.container(border=True):
     st.markdown("### 🔐 Inloggen")
     st.markdown(
-        "Je krijgt een gebruikersnaam en wachtwoord van de beheerder. "
-        "Werkt je login niet? Neem contact op."
-    )
+    "Je krijgt een gebruikersnaam en wachtwoord van de beheerder. "
+    "Vink **Ingelogd blijven op dit toestel** aan als je niet elke keer opnieuw wil inloggen. "
+    "Werkt je login niet? Neem contact op."
+)
 
 # ============================================================
 # Telefoon
