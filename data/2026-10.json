@@ -42,5 +42,20 @@
         ]
       }
     }
+  },
+  "2026-10-05": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "2aa3c07e",
+            "begin": "06:55",
+            "eind": "08:55",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
