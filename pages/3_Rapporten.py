@@ -4,6 +4,7 @@ import streamlit as st
 
 from src.reports import period_bounds, load_range, aggregate, shift_minutes, fmt_hm
 from src.export import to_excel_bytes, to_pdf_bytes
+from src.ui import kpi_grid
 
 st.title("📊 Rapporten")
 
@@ -48,7 +49,7 @@ if not rows:
     st.stop()
 
 # ============================================================
-# BLOK 2 — Filters en groepering
+# BLOK 2 — Filters
 # ============================================================
 with st.container(border=True):
     st.markdown("#### 🎛️ Filters")
@@ -79,20 +80,19 @@ n_days = len({d for d, _ in rows})
 gem_per_dag = total_min // n_days if n_days else 0
 
 # ============================================================
-# BLOK 3 — Totalen
+# BLOK 3 — Totalen (2x2 grid)
 # ============================================================
 with st.container(border=True):
     st.markdown("#### 🧮 Totalen")
-
-    c1, c2 = st.columns(2)
-    c1.metric("Totaal uren", fmt_hm(total_min))
-    c2.metric("Aantal shiften", len(rows))
-    c3, c4 = st.columns(2)
-    c3.metric("Dagen met uren", n_days)
-    c4.metric("Gem. per dag", fmt_hm(gem_per_dag))
+    kpi_grid([
+        ("Totaal uren",     fmt_hm(total_min)),
+        ("Aantal shiften",  len(rows)),
+        ("Dagen met uren",  n_days),
+        ("Gem. per dag",    fmt_hm(gem_per_dag)),
+    ])
 
 # ============================================================
-# BLOK 4 — Samenvatting
+# BLOK 4 — Samenvatting (dicht/uitklapbaar)
 # ============================================================
 summary_df = pd.DataFrame([
     {"Periode": b["key"], "Uren": fmt_hm(b["minutes"]), "Shiften": b["count"]}
@@ -101,10 +101,11 @@ summary_df = pd.DataFrame([
 
 with st.container(border=True):
     st.markdown(f"#### 📋 Samenvatting per {group_by.lower()}")
-    st.dataframe(summary_df, use_container_width=True, hide_index=True)
+    with st.expander("Toon samenvatting", expanded=False):
+        st.dataframe(summary_df, use_container_width=True, hide_index=True)
 
 # ============================================================
-# BLOK 5 — Detail per shift
+# BLOK 5 — Detail per shift (dicht/uitklapbaar)
 # ============================================================
 detail_df = pd.DataFrame([
     {
