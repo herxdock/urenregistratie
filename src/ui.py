@@ -7,7 +7,7 @@ def inject_mobile_css():
         <style>
         /* ---------- Basis ---------- */
         html, body, [class*="css"] {
-            font-size: 18px;
+            font-size: 20px;
             -webkit-tap-highlight-color: transparent;
         }
         .block-container {
@@ -17,27 +17,44 @@ def inject_mobile_css():
         }
 
         /* ---------- Koppen ---------- */
-        h1 { font-size: 1.65rem !important; line-height: 1.25; margin-bottom: .35rem !important; }
-        h2 { font-size: 1.35rem !important; margin-top: .5rem !important; }
-        h3 { font-size: 1.15rem !important; }
+        h1 { font-size: 1.9rem !important; line-height: 1.25; margin-bottom: .4rem !important; }
+        h2 { font-size: 1.55rem !important; margin-top: .6rem !important; }
+        h3 { font-size: 1.3rem !important; }
 
         /* ---------- Knoppen ---------- */
         .stButton > button,
         .stDownloadButton > button,
         .stFormSubmitButton > button {
-            font-size: 1.05rem !important;
+            font-size: 1.15rem !important;
             font-weight: 600;
-            padding: 0.85rem 1rem !important;
+            padding: 1rem 1.1rem !important;
             border-radius: 14px !important;
             width: 100%;
-            min-height: 52px;
+            min-height: 58px;
         }
-        /* Primary = duidelijke actiekleur */
+
+        /* Primaire knop: zachte staalblauwe tint, geen fel blauw */
         .stButton > button[kind="primary"],
-        .stFormSubmitButton > button[kind="primary"] {
-            background: linear-gradient(180deg,#0d6efd,#0a58ca) !important;
+        .stFormSubmitButton > button[kind="primary"],
+        .stDownloadButton > button[kind="primary"] {
+            background: #6b8dab !important;
+            color: #ffffff !important;
             border: none !important;
-            box-shadow: 0 2px 6px rgba(13,110,253,.35);
+            box-shadow: 0 2px 6px rgba(107,141,171,.25);
+        }
+        .stButton > button[kind="primary"]:hover,
+        .stFormSubmitButton > button[kind="primary"]:hover {
+            background: #5a7a95 !important;
+        }
+
+        /* Secundaire knoppen: rustig grijs */
+        .stButton > button[kind="secondary"] {
+            background: #eef2f6 !important;
+            color: #334155 !important;
+            border: 1px solid #d8e0e8 !important;
+        }
+        .stButton > button[kind="secondary"]:hover {
+            background: #e3e9ef !important;
         }
 
         /* ---------- Invoervelden ---------- */
@@ -46,15 +63,15 @@ def inject_mobile_css():
         .stDateInput input,
         .stTimeInput input,
         div[data-baseweb="select"] > div {
-            font-size: 1.08rem !important;
-            padding: 0.6rem 0.7rem !important;
+            font-size: 1.15rem !important;
+            padding: 0.7rem 0.8rem !important;
             border-radius: 10px !important;
         }
 
         /* ---------- Labels ---------- */
         label, .stSelectbox label, .stTextArea label,
-        .stDateInput label, .stTimeInput label {
-            font-size: 0.98rem !important;
+        .stDateInput label, .stTimeInput label, .stRadio label {
+            font-size: 1.05rem !important;
             font-weight: 600;
             color: #334155;
         }
@@ -64,40 +81,36 @@ def inject_mobile_css():
             border-radius: 16px !important;
             border: 1px solid #e2e8f0 !important;
             background: #ffffff;
-            padding: 4px 2px;
+            padding: 6px 4px;
             box-shadow: 0 1px 3px rgba(15,23,42,.05);
         }
-        /* Ruimte tussen kaarten */
         div[data-testid="stVerticalBlockBorderWrapper"] + div[data-testid="stVerticalBlockBorderWrapper"] {
-            margin-top: .75rem;
+            margin-top: .85rem;
         }
 
-        /* ---------- Metrics strak ---------- */
+        /* ---------- Metrics ---------- */
         div[data-testid="stMetricValue"] {
-            font-size: 1.4rem !important;
-            color: #0d6efd;
+            font-size: 1.55rem !important;
+            color: #6b8dab !important;
         }
         div[data-testid="stMetricLabel"] {
-            font-size: .85rem !important;
+            font-size: 0.95rem !important;
         }
 
-        /* ---------- Sidebar (indien gebruikt) ---------- */
+        /* ---------- Sidebar ---------- */
         section[data-testid="stSidebar"] {
             background: #f8fafc;
         }
         section[data-testid="stSidebar"] a {
-            font-size: 1.05rem !important;
-            padding: .55rem .75rem !important;
+            font-size: 1.15rem !important;
+            padding: .65rem .8rem !important;
             border-radius: 10px;
         }
 
-        /* ---------- Radio/checkbox iets groter ---------- */
-        .stRadio label, .stCheckbox label { font-size: 1rem !important; }
-
-        /* ---------- Tabs (voor later) ---------- */
+        /* ---------- Tabs ---------- */
         button[data-baseweb="tab"] {
-            font-size: 1rem !important;
-            padding: .6rem 1rem !important;
+            font-size: 1.05rem !important;
+            padding: .65rem 1rem !important;
         }
         </style>
         """,
