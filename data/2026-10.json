@@ -31,6 +31,13 @@
             "eind": "08:55",
             "type": "Inspring",
             "commentaar": "Owv ziekte Krakkebol"
+          },
+          {
+            "id": "27a4814c",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
