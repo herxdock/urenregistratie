@@ -30,24 +30,25 @@ with st.container(border=True):
     st.caption("Dit zijn de opties in de dropdown bij een shift.")
 
     for i, t in enumerate(types):
-        c1, c2, c3 = st.columns([5, 1, 1])
-        new_val = c1.text_input(
-            f"Type {i+1}",
-            value=t,
-            key=f"t_{i}",
-            label_visibility="collapsed",
-        )
-        if c2.button("💾", key=f"sv_{i}", help="Opslaan"):
-            if new_val.strip() and new_val.strip() != t:
-                types[i] = new_val.strip()
-                changed = True
-        if t == "Standaard":
-            c3.button("🔒", key=f"del_{i}", disabled=True, help="Standaard kan niet weg")
-        else:
-            if c3.button("🗑️", key=f"del_{i}", help="Verwijderen"):
-                types.pop(i)
-                changed = True
-                st.rerun()
+    c1, c2, c3 = st.columns([5, 1, 1])
+    new_val = c1.text_input(f"Type {i+1}", value=t, key=f"t_{i}",
+                            label_visibility="collapsed")
+
+    if c2.button("💾", key=f"sv_{i}", help="Opslaan"):
+        if new_val.strip() and new_val.strip() != t:
+            types[i] = new_val.strip()
+            save_settings({"shift_types": types})
+            st.success("Type aangepast ✅")
+            st.rerun()
+
+    if t == "Standaard":
+        c3.button("🔒", key=f"del_{i}", disabled=True, help="Standaard kan niet weg")
+    else:
+        if c3.button("🗑️", key=f"del_{i}", help="Verwijderen"):
+            types.pop(i)
+            save_settings({"shift_types": types})
+            st.success("Type verwijderd ✅")
+            st.rerun()
 
 # ============================================================
 # BLOK 2 — Nieuw type
