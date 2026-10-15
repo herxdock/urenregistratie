@@ -43,17 +43,42 @@ def save_month(d: date, data: dict, message: str) -> None:
             raise
 
 
+def load_day_full(d: date) -> dict:
+    """Geeft {"shifts": [...], "note": "..."}."""
+    entry = load_month(d).get(d.isoformat(), {})
+    return {
+        "shifts": entry.get("shifts", []),
+        "note": entry.get("note", ""),
+    }
+
+
 def load_day(d: date) -> list:
-    return load_month(d).get(d.isoformat(), {}).get("shifts", [])
+    return load_day_full(d)["shifts"]
 
 
-def save_day(d: date, shifts: list) -> None:
+def save_day(d: date, shifts: list = None, note: str = None) -> None:
+    """Update alleen de meegegeven velden (None = niet wijzigen)."""
     month = load_month(d)
     key = d.isoformat()
-    if shifts:
-        month[key] = {"shifts": shifts}
+    entry = month.get(key, {})
+
+    if shifts is not None:
+        if shifts:
+            entry["shifts"] = shifts
+        else:
+            entry.pop("shifts", None)
+
+    if note is not None:
+        if note.strip():
+            entry["note"] = note.strip()
+        else:
+            entry.pop("note", None)
+
+    if entry:
+        month[key] = entry
     elif key in month:
         del month[key]
+
     save_month(d, month, f"Uren {key}")
 
 
@@ -63,14 +88,20 @@ def delete_shift(d: date, shift_id: str) -> bool:
     if key not in month:
         return False
 
-    shifts = month[key].get("shifts", [])
+    entry = month[key]
+    shifts = entry.get("shifts", [])
     new_shifts = [s for s in shifts if s.get("id") != shift_id]
 
     if len(new_shifts) == len(shifts):
         return False
 
     if new_shifts:
-        month[key] = {"shifts": new_shifts}
+        entry["shifts"] = new_shifts
+    else:
+        entry.pop("shifts", None)
+
+    if entry:
+        month[key] = entry
     else:
         del month[key]
 
