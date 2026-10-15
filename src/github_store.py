@@ -43,67 +43,104 @@ def save_month(d: date, data: dict, message: str) -> None:
             raise
 
 
-def load_day_full(d: date) -> dict:
-    """Geeft {"shifts": [...], "note": "..."}."""
+def _migrate_entry(entry: dict, current_user: str) -> dict:
+    """Zet oud formaat (top-level shifts/note) om naar users-formaat."""
+    if "users" in entry:
+        return entry
+    old_shifts = entry.get("shifts", [])
+    old_note = entry.get("note", "")
+    users = {}
+    if old_shifts or old_note:
+        u = {}
+        if old_shifts:
+            u["shifts"] = old_shifts
+        if old_note:
+            u["note"] = old_note
+        users[current_user] = u
+    return {"users": users}
+
+
+def load_day_full(d: date, user: str) -> dict:
+    """Geeft {"shifts": [...], "note": "..."} voor één gebruiker."""
     entry = load_month(d).get(d.isoformat(), {})
-    return {
-        "shifts": entry.get("shifts", []),
-        "note": entry.get("note", ""),
-    }
+    if "users" in entry:
+        u = entry["users"].get(user, {})
+        return {"shifts": u.get("shifts", []), "note": u.get("note", "")}
+    # Oud formaat: toegewezen aan huidige user (migreert bij save)
+    return {"shifts": entry.get("shifts", []), "note": entry.get("note", "")}
 
 
-def load_day(d: date) -> list:
-    return load_day_full(d)["shifts"]
+def load_day(d: date, user: str) -> list:
+    return load_day_full(d, user)["shifts"]
 
 
-def save_day(d: date, shifts: list = None, note: str = None) -> None:
-    """Update alleen de meegegeven velden (None = niet wijzigen)."""
+def save_day(d: date, user: str, shifts: list = None, note: str = None) -> None:
     month = load_month(d)
     key = d.isoformat()
-    entry = month.get(key, {})
+    entry = _migrate_entry(month.get(key, {}), user)
+
+    users_data = entry.setdefault("users", {})
+    u = users_data.setdefault(user, {})
 
     if shifts is not None:
         if shifts:
-            entry["shifts"] = shifts
+            u["shifts"] = shifts
         else:
-            entry.pop("shifts", None)
+            u.pop("shifts", None)
 
     if note is not None:
         if note.strip():
-            entry["note"] = note.strip()
+            u["note"] = note.strip()
         else:
-            entry.pop("note", None)
+            u.pop("note", None)
 
-    if entry:
+    if not u:
+        users_data.pop(user, None)
+
+    if users_data:
         month[key] = entry
     elif key in month:
         del month[key]
 
-    save_month(d, month, f"Uren {key}")
+    save_month(d, month, f"Uren {key} [{user}]")
 
 
-def delete_shift(d: date, shift_id: str) -> bool:
+def delete_shift(d: date, user: str, shift_id: str) -> bool:
     month = load_month(d)
     key = d.isoformat()
     if key not in month:
         return False
 
-    entry = month[key]
-    shifts = entry.get("shifts", [])
+    entry = _migrate_entry(month[key], user)
+    users_data = entry.get("users", {})
+    u = users_data.get(user, {})
+    shifts = u.get("shifts", [])
     new_shifts = [s for s in shifts if s.get("id") != shift_id]
 
     if len(new_shifts) == len(shifts):
         return False
 
     if new_shifts:
-        entry["shifts"] = new_shifts
+        u["shifts"] = new_shifts
     else:
-        entry.pop("shifts", None)
+        u.pop("shifts", None)
 
-    if entry:
+    if not u:
+        users_data.pop(user, None)
+    if not users_data:
+        month.pop(key, None)
+    else:
         month[key] = entry
-    else:
-        del month[key]
 
-    save_month(d, month, f"Verwijder shift {shift_id} op {key}")
+    save_month(d, month, f"Verwijder shift {shift_id} op {key} [{user}]")
     return True
+
+
+def list_users_in_month(d: date) -> list[str]:
+    """Geef alle gebruikersnamen die in deze maand data hebben."""
+    month = load_month(d)
+    names = set()
+    for entry in month.values():
+        if "users" in entry:
+            names.update(entry["users"].keys())
+    return sorted(names)
