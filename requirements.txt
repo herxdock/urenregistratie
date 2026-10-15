@@ -3,3 +3,4 @@ PyGithub
 pandas
 openpyxl
 fpdf2
+extra-streamlit-components
