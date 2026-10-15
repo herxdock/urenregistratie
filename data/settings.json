@@ -1,0 +1,9 @@
+{
+  "shift_types": [
+    "Standaard",
+    "Verlof",
+    "Ziekte",
+    "Feestdag",
+    "Opleiding"
+  ]
+}
