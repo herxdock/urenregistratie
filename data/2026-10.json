@@ -1,0 +1,13 @@
+{
+  "2026-10-15": {
+    "shifts": [
+      {
+        "id": "26a7fe78",
+        "begin": "08:00",
+        "eind": "08:55",
+        "type": "Standaard",
+        "commentaar": ""
+      }
+    ]
+  }
+}
