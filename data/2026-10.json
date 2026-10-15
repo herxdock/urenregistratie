@@ -4,13 +4,6 @@
       "jan": {
         "shifts": [
           {
-            "id": "fd08052b",
-            "begin": "15:15",
-            "eind": "17:30",
-            "type": "Standaard",
-            "commentaar": ""
-          },
-          {
             "id": "0fe9a572",
             "begin": "09:10",
             "eind": "11:55",
