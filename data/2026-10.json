@@ -211,5 +211,20 @@
         ]
       }
     }
+  },
+  "2026-10-14": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "5d50c019",
+            "begin": "08:00",
+            "eind": "12:24",
+            "type": "VERLOF",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
