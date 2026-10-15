@@ -6,11 +6,6 @@ COOKIE_NAME = "uren_user"
 COOKIE_DAYS = 30
 
 
-@st.cache_resource
-def _cookie_manager():
-    return stx.CookieManager(key="uren_auth")
-
-
 def current_user() -> dict:
     return st.session_state.get("user") or {}
 
@@ -18,7 +13,7 @@ def current_user() -> dict:
 def _try_cookie_login():
     """Poging om met een bestaande cookie in te loggen."""
     try:
-        cm = _cookie_manager()
+        cm = stx.CookieManager(key="uren_auth")
         cookies = cm.get_all() or {}
         u = cookies.get(COOKIE_NAME)
         users = st.secrets.get("users", {})
@@ -62,7 +57,7 @@ def require_login():
             }
             if remember:
                 try:
-                    cm = _cookie_manager()
+                    cm = stx.CookieManager(key="uren_auth")
                     cm.set(COOKIE_NAME, u, expires_at=None,
                            max_age=COOKIE_DAYS * 24 * 3600)
                 except Exception:
@@ -75,7 +70,7 @@ def require_login():
 
 def logout():
     try:
-        cm = _cookie_manager()
+        cm = stx.CookieManager(key="uren_auth")
         cm.delete(COOKIE_NAME)
     except Exception:
         pass
