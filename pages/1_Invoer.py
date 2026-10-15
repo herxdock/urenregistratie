@@ -7,9 +7,7 @@ from src.ui import inject_mobile_css
 from src.github_store import load_day, save_day
 from src.settings_store import load_settings
 
-st.set_page_config(page_title="Invoer", page_icon="📝", layout="centered")
-user = require_login()
-inject_mobile_css()
+
 
 st.title("📝 Uren invullen")
 
