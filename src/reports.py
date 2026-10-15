@@ -31,7 +31,11 @@ def period_bounds(mode, ref=None, start=None, end=None):
     return start, end
 
 
-def load_range(start: date, end: date):
+def load_range(start: date, end: date, users=None):
+    """
+    Geeft list van (datum, shift, gebruikersnaam).
+    users=None → alle gebruikers. users=set/list → filter.
+    """
     out = []
     cache = {}
     d = start
@@ -39,17 +43,42 @@ def load_range(start: date, end: date):
         key = (d.year, d.month)
         if key not in cache:
             cache[key] = load_month(d)
-        day = cache[key].get(d.isoformat())
-        if day:
-            for s in day.get("shifts", []):
-                out.append((d, s))
+        entry = cache[key].get(d.isoformat(), {})
+
+        if "users" in entry:
+            for uname, udata in entry["users"].items():
+                if users is not None and uname not in users:
+                    continue
+                for s in udata.get("shifts", []):
+                    out.append((d, s, uname))
+        else:
+            # oud formaat
+            if users is None:
+                for s in entry.get("shifts", []):
+                    out.append((d, s, None))
         d += timedelta(days=1)
     return out
 
 
+def all_users_in_range(start: date, end: date) -> list:
+    names = set()
+    cache = {}
+    d = start
+    while d <= end:
+        key = (d.year, d.month)
+        if key not in cache:
+            cache[key] = load_month(d)
+        entry = cache[key].get(d.isoformat(), {})
+        if "users" in entry:
+            names.update(entry["users"].keys())
+        d += timedelta(days=1)
+    return sorted(names)
+
+
 def aggregate(rows, group_by: str):
     buckets: dict = {}
-    for d, s in rows:
+    for row in rows:
+        d, s = row[0], row[1]
         if group_by == "Dag":
             key = d.strftime("%d/%m/%Y")
             sort = d
