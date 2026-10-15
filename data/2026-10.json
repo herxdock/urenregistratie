@@ -115,5 +115,20 @@
         ]
       }
     }
+  },
+  "2026-10-08": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "774665eb",
+            "begin": "06:55",
+            "eind": "08:55",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
