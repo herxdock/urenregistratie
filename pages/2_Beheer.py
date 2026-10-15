@@ -1,3 +1,9 @@
+from src.auth import current_user
+
+me = current_user()
+if me.get("role") != "admin":
+    st.error("🔒 Geen toegang. Deze pagina is enkel voor beheerders.")
+    st.stop()
 from datetime import date, timedelta
 import streamlit as st
 
@@ -72,105 +78,96 @@ with st.container(border=True):
                "Dubbele bevestiging nodig.")
 
     c1, c2 = st.columns(2)
-    start = c1.date_input(
-        "Van",
-        value=date.today().replace(day=1),
-        format="DD/MM/YYYY",
-        key="del_start",
-    )
-    end = c2.date_input(
-        "Tot",
-        value=date.today(),
-        format="DD/MM/YYYY",
-        key="del_end",
-    )
+    start = c1.date_input("Van", value=date.today().replace(day=1),
+                          format="DD/MM/YYYY", key="del_start")
+    end = c2.date_input("Tot", value=date.today(),
+                        format="DD/MM/YYYY", key="del_end")
 
     if end < start:
         st.error("Einddatum moet na startdatum liggen.")
         st.stop()
 
-    # ----- Data ophalen -----
-    days_with_shifts: dict = {}
+    days_data: dict = {}
     cache = {}
     d = start
     while d <= end:
-        key = (d.year, d.month)
-        if key not in cache:
-            cache[key] = load_month(d)
-        day_data = cache[key].get(d.isoformat())
-        if day_data and day_data.get("shifts"):
-            days_with_shifts[d] = day_data["shifts"]
+        k = (d.year, d.month)
+        if k not in cache:
+            cache[k] = load_month(d)
+        entry = cache[k].get(d.isoformat(), {})
+        if "users" in entry:
+            for uname, udata in entry["users"].items():
+                if udata.get("shifts"):
+                    days_data.setdefault(d, []).append((uname, udata["shifts"]))
+        elif entry.get("shifts"):
+            # oud formaat
+            days_data.setdefault(d, []).append((None, entry["shifts"]))
         d += timedelta(days=1)
 
-    if not days_with_shifts:
+    if not days_data:
         st.info("Geen shiften in deze periode.")
     else:
-        total_shifts = sum(len(v) for v in days_with_shifts.values())
+        total_shifts = sum(len(shifts) for rows in days_data.values() for _, shifts in rows)
         total_min = sum(
-            shift_minutes(s) for shifts in days_with_shifts.values() for s in shifts
+            shift_minutes(s)
+            for rows in days_data.values()
+            for _, shifts in rows
+            for s in shifts
         )
-
-        # KPI-grid bovenaan dit blok
         kpi_grid([
-            ("Shiften",      total_shifts),
-            ("Totaal uren",  fmt_hm(total_min)),
+            ("Shiften", total_shifts),
+            ("Totaal uren", fmt_hm(total_min)),
         ])
 
         st.markdown("---")
+        confirm_key = st.session_state.get("confirm_del")
 
-        confirm_id = st.session_state.get("confirm_del")
+        for day in sorted(days_data):
+            for uname, shifts in days_data[day]:
+                label_uname = uname or "onbekend"
+                day_min = sum(shift_minutes(s) for s in shifts)
+                with st.expander(
+                    f"📅 {day:%d/%m/%Y} · 👤 {label_uname} — "
+                    f"{len(shifts)} shift(s), {fmt_hm(day_min)}"
+                ):
+                    for s in sorted(shifts, key=lambda x: x.get("begin", "00:00")):
+                        sid = s.get("id", "")
+                        key_base = f"{sid}_{label_uname}"
+                        with st.container(border=True):
+                            st.markdown(
+                                f"**{s.get('begin','?')} – {s.get('eind','?')}**  "
+                                f"· {fmt_hm(shift_minutes(s))}  \n"
+                                f"Type: `{s.get('type','')}`"
+                            )
+                            if s.get("commentaar"):
+                                st.caption(f"💬 {s['commentaar']}")
 
-        for day in sorted(days_with_shifts):
-            shifts = days_with_shifts[day]
-            shifts_sorted = sorted(shifts, key=lambda s: s.get("begin", "00:00"))
-            day_min = sum(shift_minutes(s) for s in shifts)
-
-            with st.expander(
-                f"📅 {day:%d/%m/%Y} — {len(shifts)} shift(s), {fmt_hm(day_min)}"
-            ):
-                for s in shifts_sorted:
-                    sid = s.get("id", "")
-                    with st.container(border=True):
-                        st.markdown(
-                            f"**{s.get('begin','?')} – {s.get('eind','?')}**  "
-                            f"· {fmt_hm(shift_minutes(s))}  \n"
-                            f"Type: `{s.get('type','')}`"
-                        )
-                        if s.get("commentaar"):
-                            st.caption(f"💬 {s['commentaar']}")
-
-                        if confirm_id == sid:
-                            st.warning("⚠️ Zeker dat je deze shift definitief wil verwijderen?")
-                            c_yes, c_no = st.columns(2)
-                            if c_yes.button(
-                                "✅ Ja, verwijderen",
-                                key=f"yes_{sid}",
-                                type="primary",
-                                use_container_width=True,
-                            ):
-                                try:
-                                    ok = delete_shift(day, sid)
+                            if confirm_key == key_base:
+                                st.warning("⚠️ Zeker dat je deze shift definitief wil verwijderen?")
+                                c_yes, c_no = st.columns(2)
+                                if c_yes.button("✅ Ja, verwijderen",
+                                                key=f"yes_{key_base}",
+                                                type="primary", use_container_width=True):
+                                    try:
+                                        if uname is None:
+                                            st.error("Oude data zonder gebruiker — kan niet via Beheer verwijderd worden.")
+                                        else:
+                                            ok = delete_shift(day, uname, sid)
+                                            st.session_state.pop("confirm_del", None)
+                                            if ok:
+                                                st.success("Shift verwijderd ✅")
+                                                st.rerun()
+                                            else:
+                                                st.warning("Shift niet gevonden.")
+                                    except Exception as ex:
+                                        st.error(f"Verwijderen mislukt: {ex}")
+                                if c_no.button("↩️ Annuleren", key=f"no_{key_base}",
+                                               use_container_width=True):
                                     st.session_state.pop("confirm_del", None)
-                                    if ok:
-                                        st.success("Shift verwijderd ✅")
-                                    else:
-                                        st.warning("Shift was al verwijderd.")
                                     st.rerun()
-                                except Exception as ex:
-                                    st.error(f"Verwijderen mislukt: {ex}")
-
-                            if c_no.button(
-                                "↩️ Annuleren",
-                                key=f"no_{sid}",
-                                use_container_width=True,
-                            ):
-                                st.session_state.pop("confirm_del", None)
-                                st.rerun()
-                        else:
-                            if st.button(
-                                "🗑️ Verwijder deze shift",
-                                key=f"ask_{sid}",
-                                use_container_width=True,
-                            ):
-                                st.session_state["confirm_del"] = sid
-                                st.rerun()
+                            else:
+                                if st.button("🗑️ Verwijder deze shift",
+                                             key=f"ask_{key_base}",
+                                             use_container_width=True):
+                                    st.session_state["confirm_del"] = key_base
+                                    st.rerun()
