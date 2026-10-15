@@ -20,5 +20,20 @@
         ]
       }
     }
+  },
+  "2026-10-02": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "a3a0d22c",
+            "begin": "07:00",
+            "eind": "08:55",
+            "type": "Inspring",
+            "commentaar": "Owv ziekte Krakkebol"
+          }
+        ]
+      }
+    }
   }
 }
