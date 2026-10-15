@@ -1,13 +1,1 @@
-{
-  "2026-10-14": {
-    "shifts": [
-      {
-        "id": "5eee7793",
-        "begin": "07:55",
-        "eind": "08:35",
-        "type": "Roze shift",
-        "commentaar": "Iemand ziek"
-      }
-    ]
-  }
-}
+{}
