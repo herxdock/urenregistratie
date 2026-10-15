@@ -1,1 +1,17 @@
-{}
+{
+  "2026-10-01": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "f1100f58",
+            "begin": "08:55",
+            "eind": "10:55",
+            "type": "Standaard",
+            "commentaar": "Poets"
+          }
+        ]
+      }
+    }
+  }
+}
