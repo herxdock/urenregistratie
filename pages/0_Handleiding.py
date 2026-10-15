@@ -10,19 +10,23 @@ with st.container(border=True):
     st.markdown("### 📝 Dagelijkse invoer")
 
     st.markdown("""
-1. Open **Invoer** in het menu.
+1. Open **Invoer** in het menu. Bovenaan zie je meteen of er voor vandaag al uren zijn geregistreerd.
 2. De datum staat standaard op **vandaag**. Werk je een oudere dag bij? Kies dan een andere datum.
 3. Voor **elke shift** vul je in:
-   - **Begin** en **Eind** (tijd)
-   - **Type** (standaard staat dit op *Standaard*)
-   - **Commentaar** (optioneel, vrije tekst)
-4. Klik **💾 Shift opslaan** om te bevestigen. Pas dan wordt de shift écht bewaard.
-5. Nieuwe shift toevoegen? Klik onderaan op **➕ Extra shift**.
-6. Een shift wissen? Klik op het **🗑️**-icoon naast de opslaanknop.
+   - **Begin** en **Eind**
+   - **Type** (standaard = *Standaard*)
+   - **Commentaar** (optioneel, over die specifieke shift)
+4. Klik **💾 Shift opslaan**. Pas dan wordt de shift bewaard.
+5. Nieuwe shift toevoegen? Klik op **➕ Extra shift**.
+6. Een shift wissen? Klik op het **🗑️**-icoon.
+7. Onderaan kan je een **notitie voor de hele dag** toevoegen (bv. *ziek gemeld*).
 """)
 
-    st.info("💡 Je kan meerdere shiften per dag ingeven. "
-            "Werk je die dag niet, laat dan alles leeg of verwijder de shiften.")
+    st.warning(
+        "⚠️ De app waarschuwt je bij **overlappende shiften** of bij een "
+        "**onwaarschijnlijke duur** (<15 min of >12 u). Je moet dan een tweede "
+        "keer op **Opslaan** klikken om te bevestigen."
+    )
 
 # ============================================================
 # Beheer
@@ -57,6 +61,17 @@ with st.container(border=True):
 
 Totalen worden getoond als **uren:minuten** (bv. `7:30`).
 """)
+
+with st.container(border=True):
+    st.markdown("### 📅 Kalender")
+    st.markdown(
+        "Maandoverzicht met visuele weergave van ingevulde dagen:\n\n"
+        "- 🟩 ingevulde dag (met aantal uren)\n"
+        "- ⬜ geen uren\n"
+        "- 📝 dag met notitie\n"
+        "- Blauwe rand = vandaag\n\n"
+        "Kies bovenaan maand en jaar. Onderaan zie je het maandtotaal."
+    )
 
 # ============================================================
 # Inloggen
