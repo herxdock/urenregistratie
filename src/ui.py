@@ -33,7 +33,6 @@ def inject_mobile_css():
             min-height: 58px;
         }
 
-        /* Primaire knop: zachte staalblauwe tint, geen fel blauw */
         .stButton > button[kind="primary"],
         .stFormSubmitButton > button[kind="primary"],
         .stDownloadButton > button[kind="primary"] {
@@ -47,7 +46,6 @@ def inject_mobile_css():
             background: #5a7a95 !important;
         }
 
-        /* Secundaire knoppen: rustig grijs */
         .stButton > button[kind="secondary"] {
             background: #eef2f6 !important;
             color: #334155 !important;
@@ -76,25 +74,48 @@ def inject_mobile_css():
             color: #334155;
         }
 
-        /* ---------- Shift-kaarten ---------- */
+        /* ---------- Kaarten ---------- */
         div[data-testid="stVerticalBlockBorderWrapper"] {
             border-radius: 16px !important;
             border: 1px solid #e2e8f0 !important;
             background: #ffffff;
-            padding: 6px 4px;
+            padding: 8px 6px;
             box-shadow: 0 1px 3px rgba(15,23,42,.05);
         }
         div[data-testid="stVerticalBlockBorderWrapper"] + div[data-testid="stVerticalBlockBorderWrapper"] {
             margin-top: .85rem;
         }
 
-        /* ---------- Metrics ---------- */
-        div[data-testid="stMetricValue"] {
-            font-size: 1.55rem !important;
-            color: #6b8dab !important;
+        /* ---------- KPI-grid ---------- */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: .25rem;
         }
-        div[data-testid="stMetricLabel"] {
-            font-size: 0.95rem !important;
+        .kpi-card {
+            background: #f5f8fb;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 96px;
+        }
+        .kpi-label {
+            font-size: 0.92rem;
+            color: #64748b;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        .kpi-value {
+            font-size: 1.7rem;
+            color: #4a6b8a;
+            font-weight: 700;
+            line-height: 1.05;
+            word-break: break-word;
         }
 
         /* ---------- Sidebar ---------- */
@@ -116,3 +137,15 @@ def inject_mobile_css():
         """,
         unsafe_allow_html=True,
     )
+
+
+def kpi_grid(items):
+    """items: list van (label, value) tuples. Rendert een 2-koloms grid van kaartjes."""
+    cards = "".join(
+        f'<div class="kpi-card">'
+        f'<div class="kpi-label">{label}</div>'
+        f'<div class="kpi-value">{value}</div>'
+        f'</div>'
+        for label, value in items
+    )
+    st.markdown(f'<div class="kpi-grid">{cards}</div>', unsafe_allow_html=True)
