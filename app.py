@@ -14,10 +14,11 @@ require_login()
 
 # Navigatie — volgorde = volgorde in de zijbalk
 pg = st.navigation([
-    st.Page("pages/1_Invoer.py",     title="Invoer",     icon="📝", default=True),
-    st.Page("pages/2_Beheer.py",     title="Beheer",     icon="⚙️"),
-    st.Page("pages/3_Rapporten.py",  title="Rapporten",  icon="📊"),
-    st.Page("pages/0_Handleiding.py", title="Handleiding", icon="ℹ️"),
+    st.Page("pages/1_Invoer.py",       title="Invoer",      icon="📝", default=True),
+    st.Page("pages/4_Kalender.py",     title="Kalender",    icon="📅"),
+    st.Page("pages/3_Rapporten.py",    title="Rapporten",   icon="📊"),
+    st.Page("pages/2_Beheer.py",       title="Beheer",      icon="⚙️"),
+    st.Page("pages/0_Handleiding.py",  title="Handleiding", icon="ℹ️"),
 ])
 
 # Uitloggen + gebruikersinfo in de zijbalk
