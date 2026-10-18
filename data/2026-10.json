@@ -325,6 +325,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "29ebfaac",
+            "begin": "09:00",
+            "eind": "11:00",
+            "type": "Poets",
+            "commentaar": ""
           }
         ]
       }
