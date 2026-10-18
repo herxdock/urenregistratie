@@ -288,6 +288,13 @@
             "eind": "12:00",
             "type": "Teamvergadering",
             "commentaar": "Lille"
+          },
+          {
+            "id": "d0bc22fe",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
