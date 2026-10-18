@@ -281,6 +281,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "92211ad5",
+            "begin": "08:55",
+            "eind": "12:00",
+            "type": "Teamvergadering",
+            "commentaar": "Lille"
           }
         ]
       }
