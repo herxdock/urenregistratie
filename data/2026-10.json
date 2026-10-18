@@ -248,10 +248,10 @@
         "shifts": [
           {
             "id": "31904a7f",
-            "begin": "08:55",
-            "eind": "11:30",
-            "type": "Opleiding",
-            "commentaar": "ASS Lille"
+            "begin": "07:00",
+            "eind": "08:55",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
