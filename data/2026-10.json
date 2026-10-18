@@ -259,6 +259,13 @@
             "eind": "11:30",
             "type": "Opleiding",
             "commentaar": "ASS"
+          },
+          {
+            "id": "9e75ddb0",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
