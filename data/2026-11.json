@@ -246,6 +246,13 @@
             "eind": "13:00",
             "type": "Poets",
             "commentaar": ""
+          },
+          {
+            "id": "6b21bec1",
+            "begin": "15:15",
+            "eind": "17:00",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
