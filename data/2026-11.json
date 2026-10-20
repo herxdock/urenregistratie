@@ -213,5 +213,20 @@
         ]
       }
     }
+  },
+  "2026-11-25": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "846a9a03",
+            "begin": "12:30",
+            "eind": "18:30",
+            "type": "Standaard",
+            "commentaar": "Schoolvrije dag"
+          }
+        ]
+      }
+    }
   }
 }
