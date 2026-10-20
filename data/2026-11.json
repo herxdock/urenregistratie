@@ -139,5 +139,20 @@
         ]
       }
     }
+  },
+  "2026-11-12": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "8e405ff4",
+            "begin": "08:55",
+            "eind": "13:00",
+            "type": "Poets",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
