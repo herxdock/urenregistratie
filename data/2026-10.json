@@ -398,6 +398,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "2dfab8f2",
+            "begin": "08:55",
+            "eind": "11:00",
+            "type": "Teamvergadering",
+            "commentaar": ""
           }
         ]
       }
