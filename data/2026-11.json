@@ -102,5 +102,20 @@
         ]
       }
     }
+  },
+  "2026-11-10": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "dadbfca8",
+            "begin": "08:55",
+            "eind": "11:00",
+            "type": "Teamvergadering",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
