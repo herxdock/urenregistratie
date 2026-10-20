@@ -1,0 +1,17 @@
+{
+  "2026-11-02": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "bbd7a40d",
+            "begin": "07:00",
+            "eind": "12:30",
+            "type": "Standaard",
+            "commentaar": "Herfstvakantie"
+          }
+        ]
+      }
+    }
+  }
+}
