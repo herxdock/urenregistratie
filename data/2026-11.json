@@ -161,5 +161,20 @@
         ]
       }
     }
+  },
+  "2026-11-13": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "495ef621",
+            "begin": "15:10",
+            "eind": "18:30",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
