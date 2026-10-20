@@ -309,5 +309,20 @@
         ]
       }
     }
+  },
+  "2026-11-17": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "bd0837d6",
+            "begin": "08:00",
+            "eind": "12:48",
+            "type": "VERLOF",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
