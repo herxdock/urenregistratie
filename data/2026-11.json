@@ -113,6 +113,13 @@
             "eind": "11:00",
             "type": "Teamvergadering",
             "commentaar": ""
+          },
+          {
+            "id": "e7b08cec",
+            "begin": "15:10",
+            "eind": "18:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
