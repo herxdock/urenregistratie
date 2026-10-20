@@ -191,5 +191,20 @@
         ]
       }
     }
+  },
+  "2026-11-24": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "56910ff9",
+            "begin": "08:55",
+            "eind": "12:00",
+            "type": "Teamvergadering",
+            "commentaar": "Vakantieteam"
+          }
+        ]
+      }
+    }
   }
 }
