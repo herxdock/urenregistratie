@@ -39,6 +39,13 @@
             "eind": "12:00",
             "type": "Standaard",
             "commentaar": "Herfstvakantie"
+          },
+          {
+            "id": "09450b44",
+            "begin": "12:30",
+            "eind": "16:30",
+            "type": "Standaard",
+            "commentaar": "Herfstvakantie"
           }
         ]
       }
