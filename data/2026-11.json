@@ -283,6 +283,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "a29de093",
+            "begin": "15:10",
+            "eind": "17:00",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
