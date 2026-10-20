@@ -65,5 +65,20 @@
         ]
       }
     }
+  },
+  "2026-11-06": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "94a889d3",
+            "begin": "13:00",
+            "eind": "18:00",
+            "type": "Standaard",
+            "commentaar": "Herfstvakantie"
+          }
+        ]
+      }
+    }
   }
 }
