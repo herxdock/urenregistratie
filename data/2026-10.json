@@ -321,10 +321,10 @@
         "shifts": [
           {
             "id": "ba26dae3",
-            "begin": "07:30",
-            "eind": "08:55",
-            "type": "Standaard",
-            "commentaar": ""
+            "begin": "00:00",
+            "eind": "00:01",
+            "type": "Roze shift",
+            "commentaar": "Niet gewerkt"
           },
           {
             "id": "29ebfaac",
