@@ -1,0 +1,17 @@
+{
+  "2026-09-30": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "c714e236",
+            "begin": "12:00",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
+  }
+}
