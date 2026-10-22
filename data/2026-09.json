@@ -258,5 +258,20 @@
         ]
       }
     }
+  },
+  "2026-09-09": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "4d1961d1",
+            "begin": "08:00",
+            "eind": "12:24",
+            "type": "VERLOF",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
