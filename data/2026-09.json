@@ -13,5 +13,20 @@
         ]
       }
     }
+  },
+  "2026-09-29": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "cfdafe45",
+            "begin": "08:55",
+            "eind": "11:10",
+            "type": "Teamvergadering",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
