@@ -24,6 +24,13 @@
             "eind": "11:10",
             "type": "Teamvergadering",
             "commentaar": ""
+          },
+          {
+            "id": "0f0b7468",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
