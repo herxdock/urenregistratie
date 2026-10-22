@@ -116,5 +116,20 @@
         ]
       }
     }
+  },
+  "2026-09-22": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "6d21af3d",
+            "begin": "08:55",
+            "eind": "12:30",
+            "type": "Teamvergadering",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
