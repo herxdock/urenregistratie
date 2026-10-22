@@ -303,5 +303,20 @@
         ]
       }
     }
+  },
+  "2026-09-01": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "55209feb",
+            "begin": "08:55",
+            "eind": "12:00",
+            "type": "Teamvergadering",
+            "commentaar": "Zomeropruim"
+          }
+        ]
+      }
+    }
   }
 }
