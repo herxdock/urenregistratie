@@ -1,0 +1,17 @@
+{
+  "2026-08-31": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "a75bc961",
+            "begin": "13:00",
+            "eind": "18:30",
+            "type": "Standaard",
+            "commentaar": "Zomervakantie"
+          }
+        ]
+      }
+    }
+  }
+}
