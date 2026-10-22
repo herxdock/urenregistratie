@@ -127,6 +127,13 @@
             "eind": "12:30",
             "type": "Teamvergadering",
             "commentaar": ""
+          },
+          {
+            "id": "df0e5da4",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
