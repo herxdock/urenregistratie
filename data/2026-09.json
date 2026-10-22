@@ -46,6 +46,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "ec816b18",
+            "begin": "15:15",
+            "eind": "17:25",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
