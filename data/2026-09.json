@@ -90,6 +90,13 @@
             "eind": "15:15",
             "type": "Poets",
             "commentaar": ""
+          },
+          {
+            "id": "458f697a",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
