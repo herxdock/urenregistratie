@@ -314,6 +314,13 @@
             "eind": "12:00",
             "type": "Teamvergadering",
             "commentaar": "Zomeropruim"
+          },
+          {
+            "id": "a9607db7",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
