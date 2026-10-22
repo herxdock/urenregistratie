@@ -358,6 +358,13 @@
             "eind": "10:55",
             "type": "Poets",
             "commentaar": ""
+          },
+          {
+            "id": "78e1c9c1",
+            "begin": "15:15",
+            "eind": "17:30",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
