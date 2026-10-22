@@ -423,8 +423,8 @@
         "shifts": [
           {
             "id": "3dbbb61f",
-            "begin": "12:00",
-            "eind": "18:00",
+            "begin": "07:30",
+            "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
           }
