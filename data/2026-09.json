@@ -68,6 +68,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "c106707a",
+            "begin": "08:55",
+            "eind": "13:00",
+            "type": "Teamvergadering",
+            "commentaar": "Teamdag"
           }
         ]
       }
