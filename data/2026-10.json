@@ -383,6 +383,13 @@
             "eind": "11:20",
             "type": "Teamvergadering",
             "commentaar": "Gesprek met Robine"
+          },
+          {
+            "id": "35563608",
+            "begin": "15:10",
+            "eind": "18:00",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
