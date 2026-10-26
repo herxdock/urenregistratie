@@ -401,10 +401,10 @@
         "shifts": [
           {
             "id": "6062dd6f",
-            "begin": "07:30",
+            "begin": "07:00",
             "eind": "08:55",
-            "type": "Standaard",
-            "commentaar": ""
+            "type": "Inspring",
+            "commentaar": "Ziekte Ine"
           },
           {
             "id": "2dfab8f2",
