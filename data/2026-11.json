@@ -150,6 +150,13 @@
             "eind": "18:30",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "468c0ad3",
+            "begin": "07:00",
+            "eind": "08:55",
+            "type": "Inspring",
+            "commentaar": "Ziekte Nicole"
           }
         ]
       }
