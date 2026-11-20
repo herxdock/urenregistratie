@@ -236,6 +236,13 @@
             "eind": "11:00",
             "type": "Teamvergadering",
             "commentaar": ""
+          },
+          {
+            "id": "e7d521bb",
+            "begin": "15:15",
+            "eind": "17:00",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
