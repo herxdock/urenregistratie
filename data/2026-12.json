@@ -343,5 +343,20 @@
         ]
       }
     }
+  },
+  "2026-12-23": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "7acb2b18",
+            "begin": "12:30",
+            "eind": "18:30",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
