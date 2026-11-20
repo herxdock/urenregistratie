@@ -71,5 +71,20 @@
         ]
       }
     }
+  },
+  "2026-12-04": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "0ddc1994",
+            "begin": "06:55",
+            "eind": "08:55",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
