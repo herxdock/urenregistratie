@@ -104,6 +104,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "4a0b04e1",
+            "begin": "15:15",
+            "eind": "17:15",
+            "type": "Standaard",
+            "commentaar": ""
           }
         ]
       }
