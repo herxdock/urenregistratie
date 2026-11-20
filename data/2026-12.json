@@ -280,6 +280,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "3944cd3d",
+            "begin": "08:55",
+            "eind": "12:55",
+            "type": "Poets",
+            "commentaar": ""
           }
         ]
       }
