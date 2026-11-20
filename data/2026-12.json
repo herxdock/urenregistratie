@@ -152,5 +152,20 @@
         ]
       }
     }
+  },
+  "2026-12-10": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "a41ee0a1",
+            "begin": "06:55",
+            "eind": "08:55",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
