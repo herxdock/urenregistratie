@@ -313,5 +313,20 @@
         ]
       }
     }
+  },
+  "2026-12-21": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "f442dbda",
+            "begin": "08:00",
+            "eind": "12:48",
+            "type": "VERLOF",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
   }
 }
