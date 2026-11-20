@@ -1,0 +1,17 @@
+{
+  "2026-12-01": {
+    "users": {
+      "Rosita": {
+        "shifts": [
+          {
+            "id": "19ac4d5a",
+            "begin": "06:55",
+            "eind": "08:55",
+            "type": "Standaard",
+            "commentaar": ""
+          }
+        ]
+      }
+    }
+  }
+}
