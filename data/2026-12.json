@@ -9,6 +9,13 @@
             "eind": "08:55",
             "type": "Standaard",
             "commentaar": ""
+          },
+          {
+            "id": "64098a1e",
+            "begin": "08:55",
+            "eind": "12:55",
+            "type": "Poets",
+            "commentaar": ""
           }
         ]
       }
